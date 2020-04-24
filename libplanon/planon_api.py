@@ -56,7 +56,7 @@ class TokenManager():
         else:
             log.info('Requesting new token.')
 
-            self.token_wrapper['token'] = self.session_client.service.login(self.username, self.password)
+            self.token_wrapper['token'] = self.session_client.service.login(self.username, self._password)
             self.token_wrapper['expires'] = time.time() + token_default_expires
 
             return self.token_wrapper['token']
