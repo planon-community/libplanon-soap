@@ -58,3 +58,21 @@ class TokenManager():
                     raise e
 
             return self.token_wrapper['token']
+
+
+class APIManager(object):
+
+    def _get_clients(self, services):
+        for service in services:
+            self._clients.update({service: zeep.Client(wsdl=f'{self.url}/{service}?wsdl', transport=transport).service})
+
+    def __init__(self, url, services):
+        self.url = url
+        self.services = services
+
+        self._clients = {}
+
+        self._get_clients(services=services)
+
+    def __getitem__(self, item):
+        return self._clients[item]
