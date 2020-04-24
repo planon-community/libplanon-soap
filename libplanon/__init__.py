@@ -49,12 +49,12 @@ class TokenManager():
 
             try:
                 token = self.session_client.service.login(self.username, self._password)
+
+                self.token_wrapper['token'] = token
+                self.token_wrapper['expires'] = time.time() + self.token_default_expires
             except zeep.exceptions.Fault as e:
                 if e.message == 'unknown':
                     log.error('Planon session SOAP API "unknown" errors are typically due to invalid passwords')
                     raise e
-
-            self.token_wrapper['token'] = token
-            self.token_wrapper['expires'] = time.time() + self.token_default_expires
 
             return self.token_wrapper['token']
