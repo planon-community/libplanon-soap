@@ -22,16 +22,23 @@ transport = zeep.Transport(cache = zeep.cache.InMemoryCache(), session = session
 
 class TokenManager():
     """Manages SOAP API tokens for Planon
-
+    Args:
+        url (str):
+        username (str):
+        password (str):
+        reference_date (str): '2020-01-01T00:00:00'
+    Returns
+        TokenManager
     """
 
     token_default_expires = 28800
 
-    def __init__(self, url, username, password, token_age_threshold=900):
+    def __init__(self, url, username, password, reference_date=None, token_age_threshold=900):
         self.url = url
         self.username = username
         self._password = password
         self.token_age_threshold = token_age_threshold
+        self.reference_date = reference_date
 
         self.token_wrapper = {
             'expires': None,
@@ -56,6 +63,14 @@ class TokenManager():
                 if e.message == 'unknown':
                     log.error('Planon session SOAP API "unknown" errors are typically due to invalid passwords')
                     raise e
+
+            if self.reference_date:
+                log.debug(f'Setting token reference date to {self.reference_date}')
+                result = self.session_client.service.setReferenceDate(token, self.reference_date)
+
+            else:
+                log.debug('Disabling reference date')
+                result = self.session_client.service.setReferenceDate(token, None)
 
             return self.token_wrapper['token']
 
