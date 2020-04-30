@@ -1,4 +1,5 @@
 import time
+import datetime
 import os
 import json
 import logging
@@ -33,7 +34,7 @@ class TokenManager():
 
     token_default_expires = 28800
 
-    def __init__(self, url, username, password, reference_date=None, token_age_threshold=900):
+    def __init__(self, url, username, password, reference_date=datetime.datetime.utcnow().strftime('%Y-%m-%dT00:00:00'), token_age_threshold=900):
         self.url = url
         self.username = username
         self._password = password
