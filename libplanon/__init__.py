@@ -64,6 +64,9 @@ class TokenManager():
                 if e.message == 'unknown':
                     log.error('Planon session SOAP API "unknown" errors are typically due to invalid passwords')
                     raise e
+            except Exception as e:
+                log.error(e)
+                raise e
 
             if self.reference_date:
                 log.debug(f'Setting token reference date to {self.reference_date}')
