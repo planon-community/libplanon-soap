@@ -34,12 +34,12 @@ class TokenManager():
 
     token_default_expires = 28800
 
-    def __init__(self, url, username, password, reference_date=datetime.datetime.utcnow().strftime('%Y-%m-%dT00:00:00'), token_age_threshold=900):
+    def __init__(self, url, username, password, reference_date=datetime.datetime.utcnow(), token_age_threshold=900):
         self.url = url
         self.username = username
         self._password = password
         self.token_age_threshold = token_age_threshold
-        self.reference_date = reference_date
+        self.reference_date = reference_date.strftime('%Y-%m-%dT00:00:00')
 
         self.token_wrapper = {
             'expires': None,
