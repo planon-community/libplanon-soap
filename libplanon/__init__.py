@@ -39,7 +39,13 @@ class TokenManager():
         self.username = username
         self._password = password
         self.token_age_threshold = token_age_threshold
-        self.reference_date = reference_date.strftime('%Y-%m-%dT00:00:00')
+
+        if isinstance(reference_date, datetime.datetime):
+            self.reference_date = reference_date.strftime('%Y-%m-%dT00:00:00')
+        elif reference_date is None:
+            self.reference_date = None
+        else:
+            raise TypeError("reference_date expected datetime or None")
 
         self.token_wrapper = {
             'expires': None,
